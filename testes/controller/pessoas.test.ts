@@ -1,4 +1,4 @@
-import PessoasController from "../src/controller/pessoas_controller"
+import PessoasController from "../../src/controller/pessoas_controller"
 import { Request, Response } from "express"
 
 describe("PessoasController", ()=> {

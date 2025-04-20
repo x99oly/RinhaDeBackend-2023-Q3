@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:controller": "jest testes/controller",
+    "test:aid": "jest testes/aid"
   },
   "keywords": [],
   "author": "",
