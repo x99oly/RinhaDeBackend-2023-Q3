@@ -71,3 +71,34 @@ describe("11. Pessoa constructor with stack containing null", () => {
         expect(() => new Pessoa("apelido", "nome", "1990-01-01", [null])).toThrow()
     })
 })
+
+describe("12. Pessoa constructor with valid UUID", () => {
+    it("should create a Pessoa with a valid UUID", () => {
+        const validUuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // Exemplo de UUID válido
+        const pessoa = new Pessoa("apelido", "nome", "1990-01-01", ["node"], validUuid)
+        expect(pessoa.id).toBe(validUuid)
+    })
+})
+
+describe("13. Pessoa constructor with invalid UUID (wrong format)", () => {
+    it("should throw error when UUID has wrong format", () => {
+        const invalidUuid = "12345"; // UUID com formato errado
+        expect(() => new Pessoa("apelido", "nome", "1990-01-01", ["node"], invalidUuid)).toThrow()
+    })
+})
+
+describe("14. Pessoa constructor with UUID of incorrect length", () => {
+    it("should throw error when UUID has incorrect length", () => {
+        const invalidUuid = "f47ac10b-58cc-4372-a567"; // UUID com comprimento errado
+        expect(() => new Pessoa("apelido", "nome", "1990-01-01", ["node"], invalidUuid)).toThrow()
+    })
+})
+
+describe("15. Pessoa constructor without UUID (UUID should be generated)", () => {
+    it("should generate a UUID when not provided", () => {
+        const pessoa = new Pessoa("apelido", "nome", "1990-01-01", ["node"]);
+        expect(pessoa.id).toBeDefined();
+        expect(pessoa.id).toHaveLength(36); // Verificando que o UUID gerado tem o comprimento correto
+    })
+})
+

@@ -4,13 +4,13 @@ import { IEntitie } from "../interfaces/ientitie"
 
 export default class Pessoa implements IEntitie 
 {
-    id:string
+    id?:string
     apelido: string
     nome: string
     nascimento: Date
     stack?: string[] = []
 
-    constructor(ape: string, name: string, nas: string, stack?: string[]) {
+    constructor(ape: string, name: string, nas: string, stack?: string[], id?:string) {
         try {
             this.validateStringOrThrow(ape, 32) 
             this.validateStringOrThrow(name, 100) 
@@ -19,7 +19,11 @@ export default class Pessoa implements IEntitie
                 this.validateStacksOrThrow(stack, 32) 
                 this.stack = stack
             }
-            this.id = uuidv4()
+            if (id){
+                this.id = this.validateUuidOrThrow(id)
+            } else {
+                this.id = uuidv4()
+            }
             this.apelido = ape
             this.nome = name
             this.nascimento = data
@@ -46,6 +50,15 @@ export default class Pessoa implements IEntitie
     public toString():string 
     {
         return `id:${this.id}\nnome:${this.nome}\nnascimento:${this.nascimento}\nstack:${this.stack??[]}`
+    }
+
+    private validateUuidOrThrow(uuid:string):string {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+        
+        if(!uuidRegex.test(uuid)) 
+            throw new Error("Id informado não corresponde aos padrões esperados.")
+
+        return uuid
     }
 
     private validateStringOrThrow(str: string, maxLength: number): void {

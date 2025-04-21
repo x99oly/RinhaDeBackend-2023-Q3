@@ -5,15 +5,16 @@ import { Request, Response } from "express"
 import PrismaRepository from "../../src/repository/prismaClient"  // Importando o repositório real
 
 describe("PessoasController", () => {
+
     let repository: PrismaRepository
     let controller: PessoasController
     let req: Request
     let res: Response
 
     // Constantes definidas no início
-    const SUCCESS_STATUS = 200
-    const ERROR_STATUS = 404
-    const SUCCESS_MESSAGE = "Pessoa criada com sucesso"
+    const CREATED_STATUS = 201
+    const ERROR_STATUS = 400
+    const CREATED_MESSAGE = `undefined/pessoas`
     const ERROR_MESSAGE = "Erro ao salvar no banco de dados"
 
     beforeEach(async () => {
@@ -38,27 +39,26 @@ describe("PessoasController", () => {
                 apelido: "Samuel",
                 nome: "Samuel Oliveira",
                 nascimento: "1999-04-01",
-                stack: ["c#", "node"]
+                stack: ["c#", "node"],
             }
 
             await controller.createNew(req, res)
-            expect(res.status).toHaveBeenCalledWith(SUCCESS_STATUS)
-            expect(res.send).toHaveBeenCalledWith(SUCCESS_MESSAGE)
+            expect(res.status).toHaveBeenCalledWith(CREATED_STATUS)
         })
     })
 
-    describe("3 - should return 404 when apelido is already taken", () => {
+    describe("3 - should return error when apelido is already taken", () => {
         it("should return 404 for duplicate apelido", async () => {
             req.body = {
-                apelido: "Samuel",
+                apelido: "Samuel-Sussegado",
                 nome: "Samuel Oliveira",
                 nascimento: "1999-04-01",
-                stack: ["c#", "node"]
+                stack: ["c#", "node"]            
             }
+            await controller.createNew(req, res)
 
             await controller.createNew(req, res)
-            expect(res.status).toHaveBeenCalledWith(SUCCESS_STATUS)
-            expect(res.send).toHaveBeenCalledWith(SUCCESS_MESSAGE)
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
         })
     })
 

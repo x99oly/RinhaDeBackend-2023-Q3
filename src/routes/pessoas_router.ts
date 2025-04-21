@@ -6,9 +6,9 @@ class RouterPessoas {
     private router: Router;
     private pessoasController: PessoasController;
 
-    constructor(repository: IRepository) {
+    constructor(repository: IRepository, url:string) {
         this.router = Router();
-        this.pessoasController = new PessoasController(repository);
+        this.pessoasController = new PessoasController(repository, url);
 
         this.initializeRoutes();
     }
