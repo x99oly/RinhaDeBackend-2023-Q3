@@ -1,3 +1,5 @@
+import { IEntitie } from "./ientitie"
+
 export interface IRepository {
-    create<T>(model: string, data: T): Promise<void>;
+    create<T extends IEntitie>(model: string, data: T): Promise<void>;
 }

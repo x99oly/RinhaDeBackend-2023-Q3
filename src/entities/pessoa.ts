@@ -1,7 +1,9 @@
 import { stringIsNullOrWhiteSpace } from "../aid/string_aid"
 import { v4 as uuidv4 } from 'uuid'
+import { IEntitie } from "../interfaces/ientitie"
 
-export default class Pessoa {
+export default class Pessoa implements IEntitie 
+{
     id:string
     apelido: string
     nome: string
@@ -31,6 +33,21 @@ export default class Pessoa {
         }
     }
 
+    public toObjectLiteral():object {
+        return {
+            id: this.id,
+            apelido: this.apelido,
+            nome: this.nome,
+            nascimento: this.nascimento,
+            stack: this.stack,
+        }
+    }
+    
+    public toString():string 
+    {
+        return `id:${this.id}\nnome:${this.nome}\nnascimento:${this.nascimento}\nstack:${this.stack??[]}`
+    }
+
     private validateStringOrThrow(str: string, maxLength: number): void {
         if (stringIsNullOrWhiteSpace(str) || str.length > maxLength) {
             throw new Error("Não há dados no texto informado.")
@@ -52,21 +69,5 @@ export default class Pessoa {
             }
         }
     } 
-
-    
-    toObjectLiteral() {
-        return {
-            id: this.id,
-            apelido: this.apelido,
-            nome: this.nome,
-            nascimento: this.nascimento,
-            stack: this.stack,
-        }
-    }
-    
-    public toString():string 
-    {
-        return `id:${this.id}\nnome:${this.nome}\nnascimento:${this.nascimento}\nstack:${this.stack??[]}`
-    }
     
 }

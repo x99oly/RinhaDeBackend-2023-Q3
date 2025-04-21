@@ -5,7 +5,7 @@ import Pessoa from "../entities/pessoa"
 
 dotenv.config()
 
-export default class PsRawClient implements IRepository {
+export default class PsRawRepository implements IRepository {
     private client: Client
 
     constructor() {
@@ -15,18 +15,21 @@ export default class PsRawClient implements IRepository {
     }
 
     public create = async <T>(model: string, data: T): Promise<void> => {
-        // const query = `
-        //     INSERT INTO ${model} (${Object.keys(data).join(', ')})
-        //     VALUES (${Object.values(data).map((_, index) => `$${index + 1}`).join(', ')})
-        // `
+        if (data instanceof Pessoa){
+            const query = `
+            INSERT INTO pessoa (id, apelido, nome, nascimento, stack)
+            VALUES ($1, $2, $3, $4, $5)
+        `
+    
+            try {
+                const values = [data.id, data.apelido, data.nome, data.nascimento, data.stack]
+                await this.client.query(query, values)
+                console.log("Registro inserido com sucesso.")
+            } catch (err) {
+                console.error(`Erro ao inserir dados: ${err}`)
+            }
+        }
 
-        // try {
-        //     const values = Object.values(data)
-        //     await this.client.query(query, values) 
-        //     console.log("Registro inserido com sucesso.")
-        // } catch (err) {
-        //     console.error(`Erro ao inserir dados: ${err}`)
-        // }
     }
 
     public createPessoa = async (data: Pessoa): Promise<void> => {

@@ -39,7 +39,7 @@ bower_components
 build/Release
 
 # Prisma generated files
-prisma/generated/
+src/generated/prisma/
 
 # Dependency directories
 node_modules/

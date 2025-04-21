@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import Pessoa from "../entities/pessoa"
 import { IRepository } from "../interfaces/irepository"
 
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '../generated/prisma'
 
 
 export default class PessoasController
@@ -21,13 +21,13 @@ export default class PessoasController
         try {
             console.log("entrou no controller")
             const pessoa = new Pessoa(apelido, nome, nascimento, stack)
-            console.log(`objeto lançado no prista: ${pessoa.toString()}`)
-            await this.prisma.pessoa.create({data:pessoa.toObjectLiteral()})
-            // await this.repository.create("pessoa",pessoa)
+            await this.repository.create("pessoa",pessoa)
             res.status(200).send()
         } 
         catch (error){
-            res.status(404).send()
+            res.status(404).send(
+                
+            )
         }
     }
 
