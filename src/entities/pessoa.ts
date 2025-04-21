@@ -42,6 +42,16 @@ export default class Pessoa implements IEntitie
             id: this.id,
             apelido: this.apelido,
             nome: this.nome,
+            nascimento: this.nascimento,
+            stack: this.stack,
+        }
+    }
+
+    public toObject():object {
+        return {
+            id: this.id,
+            apelido: this.apelido,
+            nome: this.nome,
             nascimento: this.nascimento.toISOString().split('T')[0],
             stack: this.stack,
         }

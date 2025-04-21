@@ -22,7 +22,7 @@ export default class PrismaRepository implements IRepository {
         }
     }
 
-    public getById = async <T extends IEntitie> (paramid:string):Promise<IEntitie | null> => {
+    public getById = async (paramid:string):Promise<IEntitie | null> => {
         if (stringIsNullOrWhiteSpace(paramid))
             throw new Error(`ID informado é inválido: ${paramid}`)
 
@@ -45,6 +45,15 @@ export default class PrismaRepository implements IRepository {
             throw error
         }
     } 
+
+    public countEntities(): Promise<number> {
+        try {
+            return this.prisma.pessoa.count()
+        
+        } catch (error) {
+            throw new Error(`Falha na contagem de dados: ${error}`)
+        }
+    }
 
     /**
      * @test-only
