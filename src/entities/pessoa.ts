@@ -8,7 +8,8 @@ export default class Pessoa implements IEntitie
     apelido: string
     nome: string
     nascimento: Date
-    stack?: string[] = []
+    stack: string[] = []
+    termo: string
 
     constructor(ape: string, name: string, nas: string, stack?: string[], id?:string) {
         try {
@@ -27,6 +28,7 @@ export default class Pessoa implements IEntitie
             this.apelido = ape
             this.nome = name
             this.nascimento = data
+            this.termo = this.buildTerm()
 
         } catch (err) {
             if (err instanceof Error){
@@ -44,6 +46,7 @@ export default class Pessoa implements IEntitie
             nome: this.nome,
             nascimento: this.nascimento,
             stack: this.stack,
+            termo: this.termo
         }
     }
 
@@ -60,6 +63,11 @@ export default class Pessoa implements IEntitie
     public toString():string 
     {
         return `id:${this.id}\nnome:${this.nome}\nnascimento:${this.nascimento}\nstack:${this.stack??[]}`
+    }
+
+    private buildTerm():string {
+        let arr = this.stack.length > 0 ? this.stack.join(", ").toLocaleLowerCase() : ""
+        return `${this.apelido.toLocaleLowerCase()} ${this.nome.toLocaleLowerCase()} ${arr}`.trim()
     }
 
     private validateUuidOrThrow(uuid:string):string {
@@ -87,9 +95,7 @@ export default class Pessoa implements IEntitie
 
     private validateStacksOrThrow(stack: string[], maxLength: number): void {
         for (let i = 0; i < stack.length; i++) {
-            if (stack[i].length > maxLength){
-                throw new Error(`Parâmetro maior que o aceitável: length:${maxLength} | string:${stack[i]}`)
-            }
+            this.validateStringOrThrow(stack[i],32)
         }
     } 
     

@@ -102,3 +102,44 @@ describe("15. Pessoa constructor without UUID (UUID should be generated)", () =>
     })
 })
 
+
+describe("17. termo with empty stack", () => {
+    it("should return termo correctly without stack", () => {
+        const pessoa = new Pessoa("Samuel", "Oliveira", "1990-01-01", []);
+        expect(pessoa.termo).toBe("samuel oliveira");
+    })
+})
+
+describe("18. termo with mixed case", () => {
+    it("should return termo correctly with mixed case", () => {
+        const pessoa = new Pessoa("SaMuEl", "OlIVEIRA", "1990-01-01", ["nOdE", "Ts"]);
+        expect(pessoa.termo).toBe("samuel oliveira node, ts");
+    })
+})
+
+describe("19. termo with no apelido or nome", () => {
+    it("should throw an error when apelido or nome is empty", () => {
+        expect(() => new Pessoa("", "", "1990-01-01", ["node"])).toThrowError();
+    })
+
+    it("should throw an error when stack has empty strings", () => {
+        expect(() => new Pessoa("apelido", "nome", "1990-01-01", ["", "node"])).toThrowError();
+    })
+
+    it("should throw an error when apelido is an empty string", () => {
+        expect(() => new Pessoa("", "nome", "1990-01-01", ["node"])).toThrowError();
+    })
+
+    it("should throw an error when nome is an empty string", () => {
+        expect(() => new Pessoa("apelido", "", "1990-01-01", ["node"])).toThrowError();
+    })
+})
+
+describe("20. termo with valid data", () => {
+    it("should return termo with valid apelido, nome, and stack", () => {
+        const pessoa = new Pessoa("apelido", "nome", "1990-01-01", ["node"]);
+        expect(pessoa.termo).toBe("apelido nome node");
+    })
+})
+
+
