@@ -1,6 +1,8 @@
 import { stringIsNullOrWhiteSpace } from "../aid/string_aid"
+import { v4 as uuidv4 } from 'uuid'
 
 export default class Pessoa {
+    id:string
     apelido: string
     nome: string
     nascimento: Date
@@ -15,6 +17,7 @@ export default class Pessoa {
                 this.validateStacksOrThrow(stack, 32) 
                 this.stack = stack
             }
+            this.id = uuidv4()
             this.apelido = ape
             this.nome = name
             this.nascimento = data
@@ -48,6 +51,22 @@ export default class Pessoa {
                 throw new Error(`Parâmetro maior que o aceitável: length:${maxLength} | string:${stack[i]}`)
             }
         }
-    }  
+    } 
+
+    
+    toObjectLiteral() {
+        return {
+            id: this.id,
+            apelido: this.apelido,
+            nome: this.nome,
+            nascimento: this.nascimento,
+            stack: this.stack,
+        }
+    }
+    
+    public toString():string 
+    {
+        return `id:${this.id}\nnome:${this.nome}\nnascimento:${this.nascimento}\nstack:${this.stack??[]}`
+    }
     
 }
