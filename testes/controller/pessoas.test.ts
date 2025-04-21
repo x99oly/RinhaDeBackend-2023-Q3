@@ -91,4 +91,34 @@ describe("PessoasController", () => {
             expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
         })
     })
+
+    describe("6 - should return 404 when nome is a number.", () => {
+        it("should return 404 for number in name", async () => {
+            req.body = {
+                apelido: "Samuel1",
+                nome: 1,
+                nascimento: "1999-04-01",
+                stack: ["c#", "node"]
+            }
+
+            await controller.createNew(req, res)
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
+        })
+    })
+
+    describe("7 - should return 404 when some of stacks is a number.", () => {
+        it("should return 404 for number in stack", async () => {
+            req.body = {
+                apelido: "Samuel1",
+                nome: "Samuel Araujo",
+                nascimento: "1999-04-01",
+                stack: [1, "node"]
+            }
+
+            await controller.createNew(req, res)
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
+        })
+    })
 })
