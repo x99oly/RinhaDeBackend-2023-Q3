@@ -4,7 +4,7 @@ import PessoasController from "../../src/controller/pessoas_controller"
 import { Request, Response } from "express"
 import PrismaRepository from "../../src/repository/prismaClient"  // Importando o repositório real
 
-describe("PessoasController", () => {
+describe("Inserts in PessoasController", () => {
 
     let repository: PrismaRepository
     let controller: PessoasController

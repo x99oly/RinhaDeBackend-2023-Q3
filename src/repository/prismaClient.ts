@@ -27,13 +27,15 @@ export default class PrismaRepository implements IRepository {
             throw new Error(`ID informado é inválido: ${paramid}`)
 
         try{
+            console.log("paramid: "+paramid)
             const pessoa = iEntitieFactory(
-                await this.prisma.pessoa.findUnique({
+                await this.prisma.pessoa.findFirst({
                     where: {
                         id: paramid,
                     }
                 })
             )
+            console.log("pessoa: "+ pessoa)
             if (!pessoa)
                 throw new Error(`Não foram encontrados dados para o parâmetro 'id:${paramid}'`)
 
@@ -43,6 +45,18 @@ export default class PrismaRepository implements IRepository {
             throw error
         }
     } 
+
+    /**
+     * @test-only
+     * Executa uma query crua. NÃO usar em produção.
+     */
+    public runUnsafeQuery = async (param: string): Promise<void> => {
+        try{
+            await this.prisma.$queryRawUnsafe(param)        
+        } catch (error) {
+            throw error
+        }
+    }
 
     public clearDb = async(): Promise<void> => {
         await this.prisma.pessoa.deleteMany({})

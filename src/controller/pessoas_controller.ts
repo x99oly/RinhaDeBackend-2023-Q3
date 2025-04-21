@@ -26,12 +26,14 @@ export default class PessoasController
 
     getPessoaById = async(req: Request, res: Response):Promise<void> => {
         const { id } = req.params
-
+        console.log(id)
         try{
-            
-            
+            const entitie = await this.repository.getById(id)
+            if (!entitie)
+                res.status(200).send([])
+            res.status(200).send(entitie)
         } catch (error) {
-
+            res.status(400).send()
         }
     }
 

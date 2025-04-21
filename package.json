@@ -8,6 +8,8 @@
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "test": "jest",
     "test:controller": "jest testes/controller",
+    "test:controller:get": "jest testes/controller/get_pessoas.test.ts",
+    "test:controller:post": "jest testes/controller/insert__pessoas.test.ts",
     "test:aid": "jest testes/aid",
     "test:entities": "jest testes/entities"
   },

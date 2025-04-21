@@ -5,12 +5,13 @@ const iEntitieFactory = (entitie:any):IEntitie | null => {
     if (!entitie)
         throw new Error("Parâmetro inválido.")
 
-    if (entitie instanceof Pessoa){
+    try{
         return new Pessoa(
             entitie.apelido, entitie.nome, entitie.nascimento.toString(), entitie.stack, entitie.id
         )
+    } catch (error) {
+        return null
     }
-    return null
 }
 
 export default iEntitieFactory
