@@ -42,7 +42,7 @@ export default class Pessoa implements IEntitie
             id: this.id,
             apelido: this.apelido,
             nome: this.nome,
-            nascimento: this.nascimento,
+            nascimento: this.nascimento.toISOString().split('T')[0],
             stack: this.stack,
         }
     }

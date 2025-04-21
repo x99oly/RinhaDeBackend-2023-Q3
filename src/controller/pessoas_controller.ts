@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import Pessoa from "../entities/pessoa"
 import { IRepository } from "../interfaces/irepository"
+import { IEntitie } from "../interfaces/ientitie"
 
 export default class PessoasController
 {
@@ -28,10 +29,10 @@ export default class PessoasController
         const { id } = req.params
         console.log(id)
         try{
-            const entitie = await this.repository.getById(id)
+            const entitie:IEntitie | null = await this.repository.getById(id)
             if (!entitie)
                 res.status(200).send([])
-            res.status(200).send(entitie)
+            res.status(200).send(entitie?.toObjectLiteral())
         } catch (error) {
             res.status(400).send()
         }
