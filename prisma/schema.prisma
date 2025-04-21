@@ -16,8 +16,8 @@ datasource db {
 
 model Pessoa {
   id String @id @default(uuid())
-  apelido String
-  nome String
+  apelido String @unique @db.VarChar(32)
+  nome String @db.VarChar(32)
   nascimento DateTime
-  stack String[]
+  stack String[] @db.VarChar(32)
 }

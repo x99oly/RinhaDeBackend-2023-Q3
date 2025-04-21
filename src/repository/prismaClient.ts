@@ -19,4 +19,8 @@ export default class PrismaRepository implements IRepository {
             throw new Error("Falha ao salvar no banco de dados: " + error)
         }
     }
+
+    public clearDb = async(): Promise<void> => {
+        await this.prisma.pessoa.deleteMany({})
+    }
 }

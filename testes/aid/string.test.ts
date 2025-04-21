@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { stringIsNullOrWhiteSpace } from "../../src/aid/string_aid"
 
 describe("stringIsNullOrWhiteSpace", () => {
