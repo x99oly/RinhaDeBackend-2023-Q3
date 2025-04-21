@@ -18,7 +18,6 @@ describe("PessoasController", ()=> {
 
         const controller = new PessoasController()
         await controller.createNew(req,res)
-
         expect(res.status).toHaveBeenCalledWith(402)
     })
 })

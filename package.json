@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build":"tsc --project tsconfig.json",
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "test": "jest",
     "test:controller": "jest testes/controller",
-    "test:aid": "jest testes/aid"
+    "test:aid": "jest testes/aid",
+    "test:entities": "jest testes/entities"
   },
   "keywords": [],
   "author": "",
@@ -15,10 +17,12 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
+    "@types/mocha": "^10.0.10",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
