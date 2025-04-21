@@ -1,23 +1,39 @@
-import { Router, Request, Response } from "express"
-import PessoasController from "../controller/pessoas_controller"
+import { Router, Request, Response } from "express";
+import PessoasController from "../controller/pessoas_controller";
+import { IRepository } from "../interfaces/irepository";
 
-const RouterPessoas = Router()
-const pc = new PessoasController()
+class RouterPessoas {
+    private router: Router;
+    private pessoasController: PessoasController;
 
-RouterPessoas.post("/pessoas", (req:Request,res:Response)=>{
-    pc.createNew(req,res)
-})
+    constructor(repository: IRepository) {
+        this.router = Router();
+        this.pessoasController = new PessoasController(repository);
 
-RouterPessoas.get("/pessoas/:id", (req:Request,res:Response)=>{
-    pc.getPessoaById(req,res)
-})
+        this.initializeRoutes();
+    }
 
-RouterPessoas.get("/pessoas", (req:Request,res:Response)=>{
-    pc.getPessoaByTerm(req,res)
-})
+    private initializeRoutes() {
+        this.router.post("/pessoas", (req: Request, res: Response) => {
+            this.pessoasController.createNew(req, res);
+        });
 
-RouterPessoas.get("/contagem-pessoas", (req:Request,res:Response)=>{
-    pc.getCountPessoas(req,res)
-})
+        this.router.get("/pessoas/:id", (req: Request, res: Response) => {
+            this.pessoasController.getPessoaById(req, res);
+        });
 
-export default RouterPessoas
+        this.router.get("/pessoas", (req: Request, res: Response) => {
+            this.pessoasController.getPessoaByTerm(req, res);
+        });
+
+        this.router.get("/contagem-pessoas", (req: Request, res: Response) => {
+            this.pessoasController.getCountPessoas(req, res);
+        });
+    }
+
+    public getRouter() {
+        return this.router;
+    }
+}
+
+export default RouterPessoas;
