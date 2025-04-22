@@ -55,6 +55,29 @@ export default class PrismaRepository implements IRepository {
         }
     }
 
+    public getByTerm = async (paramString: string): Promise<IEntitie[] | []> => {
+        try {
+            const pessoas:IEntitie[] = []
+            const entities = await this.prisma.pessoa.findMany({
+                where: {
+                    termo: {
+                        contains: paramString,
+                        mode: 'insensitive',
+                    }
+                }
+            })
+
+            entities.forEach((e)=> {
+                let p = iEntitieFactory(e)
+                if(p) pessoas.push(p)                    
+            })
+            
+            return pessoas
+        } catch (error) {
+            throw new Error(`Falha ao recuperar dados do banco de dados: ${error}`)
+        }
+    }
+
     /**
      * @test-only
      * Executa uma query crua. NÃO usar em produção.

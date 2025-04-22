@@ -94,4 +94,83 @@ describe("Gets in PessoasController", () => {
         })
     })
 
+    describe("4 - should return 200 when pessoa is successfully recovered by term", () => {
+        it("should return 200", async () => {
+            const uuid = uuidv4()
+            const apelido = "Samuel"
+            const nome = "Samuel Oliveira"
+            const nascimento = "1999-04-01"
+            const termo = "Samuel"
+    
+            await repository.runUnsafeQuery(
+                `INSERT INTO "RinhaBackend2023Q3"."Pessoa" (id, apelido, nome, nascimento, termo)
+                 VALUES ('${uuid}', '${apelido}', '${nome}', '${nascimento}', '${apelido.toLowerCase()} ${nome.toLowerCase()}')`
+            )
+    
+            req.query = {
+                t: termo
+            }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(FIND_STATUS)
+            expect(res.send).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ apelido, nome })]))
+        })
+    })
+    
+    describe("5 - should return 400 when no term is provided in the query", () => {
+        it("should return 400", async () => {
+            req.query = {
+                t: ""  // Query com valor vazio
+            }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith("Não foram enviados parâmetros para a consulta: ")
+        })
+    })
+    
+    describe("6 - should return success when invalid term is provided", () => {
+        it("should return 200", async () => {
+            req.query = {
+                t: "nonexistentterm"
+            }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(FIND_STATUS)
+            expect(res.send).toHaveBeenCalledWith([]) 
+        })
+    })
+
+    describe("7 - should return error when term is null, empty or only white spaces", () => {
+        it("should return 400 when term is null", async () => {
+            req.query = { t: null }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith("Não foram enviados parâmetros para a consulta: ")
+        })
+    
+        it("should return 400 when term is an empty string", async () => {
+            req.query = { t: "" }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith("Não foram enviados parâmetros para a consulta: ")
+        })
+    
+        it("should return 400 when term is only white spaces", async () => {
+            req.query = { t: "   " }
+    
+            await controller.getPessoaByTerm(req, res)
+    
+            expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
+            expect(res.send).toHaveBeenCalledWith("Não foram enviados parâmetros para a consulta: ")
+        })
+    }) 
+
 })

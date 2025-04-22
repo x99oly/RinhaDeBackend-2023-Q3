@@ -20,5 +20,7 @@ model Pessoa {
   nome String @db.VarChar(32)
   nascimento DateTime
   stack String[] @db.VarChar(32)
-  termo_busca  String?  @db.Text
+  termo  String?  @db.Text
+
+  @@index([id])
 }

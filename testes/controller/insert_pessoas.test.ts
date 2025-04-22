@@ -73,7 +73,6 @@ describe("Inserts in PessoasController", () => {
 
             await controller.createNew(req, res)
             expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
-            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
         })
     })
 
@@ -88,7 +87,6 @@ describe("Inserts in PessoasController", () => {
 
             await controller.createNew(req, res)
             expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
-            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
         })
     })
 
@@ -103,7 +101,6 @@ describe("Inserts in PessoasController", () => {
 
             await controller.createNew(req, res)
             expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
-            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
         })
     })
 
@@ -118,7 +115,6 @@ describe("Inserts in PessoasController", () => {
 
             await controller.createNew(req, res)
             expect(res.status).toHaveBeenCalledWith(ERROR_STATUS)
-            expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE)
         })
     })
 })

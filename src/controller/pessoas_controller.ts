@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import Pessoa from "../entities/pessoa"
 import { IRepository } from "../interfaces/irepository"
 import { IEntitie } from "../interfaces/ientitie"
+import { stringIsNullOrWhiteSpace } from "../aid/string_aid"
 
 export default class PessoasController
 {
@@ -33,7 +34,7 @@ export default class PessoasController
 
     getPessoaById = async(req: Request, res: Response):Promise<void> => {
         const { id } = req.params
-        console.log(id)
+
         try{
             const entitie:IEntitie | null = await this.repository.getById(id)
             if (!entitie)
@@ -49,7 +50,23 @@ export default class PessoasController
     }
 
     getPessoaByTerm = async(req: Request, res: Response):Promise<void> => {
-        const termo = req.query.t as string
+        const termo = req.query.t as string;
+        console.log(termo)
+        
+        if (stringIsNullOrWhiteSpace(termo))
+            res.status(400).send("Não foram enviados parâmetros para a consulta: ")
+        
+        try {
+            const pessoas = await this.repository.getByTerm(termo)
+            
+            res.status(200).send(pessoas)
+        } catch (error) {
+            let errString
+            if (error instanceof Error) {
+                errString = error.message
+            }
+            res.status(400).send(`Falha ao recuperar dados: ${errString ?? error}`)
+        }
     }
 
     getCountPessoas = async(req: Request, res: Response):Promise<void> => {
