@@ -12,7 +12,7 @@ export default class PsRawRepository implements IRepository
 {
     private client: Client
     private table:string = '"RinhaBackend2023Q3"."Pessoa"'
-    private secall:string = "id, apelido, nome, nascimento, stack"
+    private selectall:string = "id, apelido, nome, nascimento, stack"
 
     constructor() {
         console.log(process.env.DATABASE_URL)
@@ -36,18 +36,17 @@ export default class PsRawRepository implements IRepository
     public create = async <T>(model: string, data: T): Promise<void> => {
         if (data instanceof Pessoa) {
             const query = `
-                INSERT INTO ${this.table} (id, apelido, nome, nascimento, stack)
-                VALUES ($1, $2, $3, $4, $5)
+                INSERT INTO ${this.table} (id, apelido, nome, nascimento, stack, termo)
+                VALUES ($1, $2, $3, $4, $5, $6)
             `;
     
             try {
-                console.log("#")
-                const values = [data.id, data.apelido, data.nome, data.nascimento, data.stack];
-                console.log("#")
+                const values = [data.id, data.apelido, data.nome, data.nascimento, data.stack, `'${data.apelido} ${data.nome} ${data.stack.toLocaleString()}'`];
+
                 await this.client.query(query, values);
                 console.log("Registro inserido com sucesso.");
             } catch (err) {
-                console.error(`Erro ao inserir dados: ${err}`);
+                throw new Error(`Erro ao inserir dados: ${err}`);
             }
         } else {
             console.error("Os dados não são uma instância de Pessoa.");
@@ -59,10 +58,11 @@ export default class PsRawRepository implements IRepository
         if (stringIsNullOrWhiteSpace(param))
             throw new Error("É necessário fornecer id para consulta.")
 
-        const query = `SELECT ${this.secall} FROM ${this.table} WHERE id='${param}';`
+        const query = `SELECT ${this.selectall} FROM ${this.table} WHERE id='${param}';`
 
         try {
-            return iEntitieFactory(await this.client.query(query))
+            const entitie = iEntitieFactory((await this.client.query(query)).rows[0])
+            return entitie
         } catch (err) {
             throw new Error(`Erro na consulta ao banco de dados: ${err}`)
         }
@@ -72,12 +72,12 @@ export default class PsRawRepository implements IRepository
         if (stringIsNullOrWhiteSpace(paramid))
             throw new Error("É necessário fornecer id para consulta.");
     
-        const query = `SELECT ${this.secall} FROM ${this.table} WHERE termo ILIKE $1`;
-    
+        const query = `SELECT ${this.selectall} FROM ${this.table} WHERE termo ILIKE '%${paramid}%';`;
+
         const ientities: IEntitie[] = [];
     
         try {
-            const result = await this.client.query(query, [`%${paramid}%`]);
+            const result = await this.client.query(query);
             
             if (result.rows.length > 0) {
                 for (const r of result.rows) {
@@ -87,9 +87,7 @@ export default class PsRawRepository implements IRepository
             }
             return ientities;
         } catch (error) {
-            // Tratando e logando o erro
-            console.error("Erro ao consultar banco de dados:", error);
-            throw new Error("Erro ao realizar a consulta no banco de dados.");
+            throw new Error("Erro ao realizar a consulta no banco de dados. "+ error);
         }
     }
     

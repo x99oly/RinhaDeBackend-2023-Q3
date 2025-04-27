@@ -18,19 +18,12 @@ export default class PessoasController
     createNew = async (req: Request, res: Response): Promise<void> => {
         const { apelido, nome, nascimento, stack } = req.body
         try {
-            console.log("#")
             const pessoa = new Pessoa(apelido, nome, nascimento, stack)
-            console.log("#")
             await this.repository.create("pessoa", pessoa)
-            console.log("#")
+            
             res.status(201).send(`${this.url}/pessoas/${pessoa.id}`)
-
         } catch (error) {
-            let errstring
-            if (error instanceof Error){
-                errstring = error.message
-            }
-            res.status(400).send(`Falha ao cadastrar dado: ${errstring ?? error}`)
+            res.status(400).send(`Falha ao cadastrar dado: ${error instanceof Error ? error.message : error}`)
         }
     }
 
@@ -43,17 +36,12 @@ export default class PessoasController
                 res.status(200).send([])
             res.status(200).send(entitie?.toObject())
         } catch (error) {
-            let errstring
-            if (error instanceof Error){
-                errstring = error.message
-            }
-            res.status(400).send(`Falha ao recuperar dado: ${errstring ?? error}`)
+            res.status(400).send(`Falha ao cadastrar dado: ${error instanceof Error ? error.message : error}`)
         }
     }
 
     getPessoaByTerm = async(req: Request, res: Response):Promise<void> => {
         const termo = req.query.t as string;
-        console.log(termo)
         
         if (stringIsNullOrWhiteSpace(termo))
             res.status(400).send("Não foram enviados parâmetros para a consulta: ")
@@ -63,11 +51,7 @@ export default class PessoasController
             
             res.status(200).send(pessoas)
         } catch (error) {
-            let errString
-            if (error instanceof Error) {
-                errString = error.message
-            }
-            res.status(400).send(`Falha ao recuperar dados: ${errString ?? error}`)
+            res.status(400).send(`Falha ao cadastrar dado: ${error instanceof Error ? error.message : error}`)
         }
     }
 
@@ -76,11 +60,7 @@ export default class PessoasController
             const total = await this.repository.countEntities()
             res.status(200).send(total)
         } catch (error) {
-            let errstring
-            if (error instanceof Error){
-                errstring = error.message
-            }
-            res.status(400).send(`Falha na contagem: ${errstring ?? error}`)
+            res.status(400).send(`Falha ao cadastrar dado: ${error instanceof Error ? error.message : error}`)
         }
     }
     

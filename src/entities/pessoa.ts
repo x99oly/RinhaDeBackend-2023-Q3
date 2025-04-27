@@ -9,35 +9,37 @@ export default class Pessoa implements IEntitie
     nome: string
     nascimento: Date
     stack: string[] = []
-    termo: string
 
-    constructor(ape: string, name: string, nas: string, stack?: string[], id?:string) {
+    constructor(ape: string, name: string, nas: string, stack?: string[], id?: string) {
         try {
-            this.validateStringOrThrow(ape, 32) 
-            this.validateStringOrThrow(name, 100) 
+            this.validateStringOrThrow(ape, 32)
+            this.validateStringOrThrow(name, 100)
             const data = this.validateAndParseDate(nas)
-            if (stack && stack.length > 0){
-                this.validateStacksOrThrow(stack, 32) 
+
+            if (stack && stack.length > 0) {
+                this.validateStacksOrThrow(stack, 32)
                 this.stack = stack
             }
-            if (id){
+
+            if (id) {
                 this.id = this.validateUuidOrThrow(id)
             } else {
                 this.id = uuidv4()
             }
+
             this.apelido = ape
             this.nome = name
             this.nascimento = data
-            this.termo = this.buildTerm()
 
         } catch (err) {
-            if (err instanceof Error){
+            if (err instanceof Error) {
                 throw Error(`Erro ao criar Pessoa: ${err.message}`)
-            }else{
+            } else {
                 throw err
             }
         }
     }
+    
 
     public toObjectLiteral():object {
         return {
@@ -46,7 +48,6 @@ export default class Pessoa implements IEntitie
             nome: this.nome,
             nascimento: this.nascimento,
             stack: this.stack,
-            termo: this.termo
         }
     }
 
