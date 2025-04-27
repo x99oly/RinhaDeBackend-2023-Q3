@@ -18,9 +18,11 @@ export default class PessoasController
     createNew = async (req: Request, res: Response): Promise<void> => {
         const { apelido, nome, nascimento, stack } = req.body
         try {
+            console.log("#")
             const pessoa = new Pessoa(apelido, nome, nascimento, stack)
+            console.log("#")
             await this.repository.create("pessoa", pessoa)
-
+            console.log("#")
             res.status(201).send(`${this.url}/pessoas/${pessoa.id}`)
 
         } catch (error) {

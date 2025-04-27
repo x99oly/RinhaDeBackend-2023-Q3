@@ -1,16 +1,17 @@
 import dotenv from 'dotenv'
 import express from "express"
 import RouterPessoas from "./routes/pessoas_router"
-import PrismaRepository from "./repository/prismaClient"
-// import PsRawRepository  from "./repository/psRawClient"
+// import PrismaRepository from "./repository/prismaClient"
+import PsRawRepository  from "./repository/psRawClient"
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3000
-const url = `${String(process.env.BASE_URL || "http://localhost")}:${port}`
+const base_url = process.env.BASE_URL || 'http://envnaorecuperado'
+const url = `${base_url}:${port}`
 
-const repository = new PrismaRepository()
+const repository = new PsRawRepository()
 // const repository = new PsRawRepository()
 const routerPessoas = new RouterPessoas(repository, url)
 

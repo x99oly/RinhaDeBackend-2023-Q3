@@ -1,4 +1,4 @@
-import { PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '@prisma/client'
 import { stringIsNullOrWhiteSpace } from '../aid/string_aid'
 import { IEntitie } from '../interfaces/ientitie'
 import { IRepository } from '../interfaces/irepository'
@@ -66,7 +66,7 @@ export default class PrismaRepository implements IRepository {
                     }
                 }
             })
-
+            // @ts-ignore
             entities.forEach((e)=> {
                 let p = iEntitieFactory(e)
                 if(p) pessoas.push(p)                    

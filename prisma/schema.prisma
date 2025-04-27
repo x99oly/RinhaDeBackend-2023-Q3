@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -24,3 +24,27 @@ model Pessoa {
 
   @@index([id])
 }
+
+
+// CREATE SCHEMA IF NOT EXISTS rinha_backend;
+
+// SET search_path TO rinha_backend;
+
+// -- Instalar a extensão pg_trgm (se ainda não estiver instalada)
+// CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+// -- Criar a tabela 'Pessoa'
+// CREATE TABLE pessoa (
+//   id UUID PRIMARY KEY,
+//   apelido VARCHAR(32) UNIQUE NOT NULL,
+//   nome VARCHAR(32) NOT NULL,
+//   nascimento TIMESTAMP NOT NULL,
+//   stack VARCHAR(32)[],
+//   termo TEXT
+// );
+
+// -- Criar o índice de trigramas na coluna 'termo'
+// CREATE INDEX idx_pessoa_termo_trgm ON pessoa USING gin (termo gin_trgm_ops);
+
+
+
