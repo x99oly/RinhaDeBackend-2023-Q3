@@ -11,7 +11,7 @@ dotenv.config()
 export default class PsRawRepository implements IRepository
 {
     private client: Client
-    private table:string = "rinha_backend.pessoa"
+    private table:string = '"RinhaBackend2023Q3"."Pessoa"'
     private secall:string = "id, apelido, nome, nascimento, stack"
 
     constructor() {
@@ -19,6 +19,18 @@ export default class PsRawRepository implements IRepository
         this.client = new Client({
             connectionString: process.env.DATABASE_URL,
         })
+        this.connectToDatabase()
+    }
+
+    private async connectToDatabase() {
+        try {
+            // Tentativa de conexão
+            await this.client.connect();
+            console.log('Conexão com o banco de dados estabelecida com sucesso!');
+
+        } catch (err) {
+            console.error('Erro ao conectar ao banco de dados:', err);
+        }
     }
 
     public create = async <T>(model: string, data: T): Promise<void> => {
